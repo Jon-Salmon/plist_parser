@@ -294,6 +294,14 @@ class PlistParser {
 
         return stringBuilder.toString();
 
+      // UID
+      case 0x80:
+        var length = 1 + (byte & 0xf);
+        pos++;
+        return UID(_bytesToInt(
+            binary.bytes.buffer.asByteData(pos, length), length,
+            signed64Bit: false));
+
       // array
       case 0xA0:
         List<Object> list = [];
@@ -360,7 +368,12 @@ class PlistParser {
           return byteData.getUint64(offset);
         }
       default:
-        throw Exception("Undefined ByteSize: $byteSize");
+        var value = 0;
+        for (var i = 0; i < byteSize; i++) {
+          value <<= 8;
+          value |= byteData.getUint8(offset + i);
+        }
+        return value;
     }
   }
 
@@ -435,4 +448,27 @@ class NotFoundException implements Exception {
 
   @override
   String toString() => 'NotFoundExceptions: $message';
+}
+
+// UID used for NSKeyedArchiver deserialization
+class UID {
+  final int value;
+
+  UID(this.value);
+
+  @override
+  bool operator ==(Object other) {
+    if (other is! UID) {
+      return false;
+    }
+    return value == other.value;
+  }
+
+  @override
+  int get hashCode => value.hashCode;
+
+  @override
+  String toString() {
+    return "UID($value)";
+  }
 }
