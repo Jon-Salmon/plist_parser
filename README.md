@@ -13,7 +13,7 @@ This was inspired by some libraries. please see below details.
 
 ```yaml
 dependencies:
-  plist_parser: "^0.0.8"
+  plist_parser: "^0.0.9"
 ```
 
 ## 📋 Requirements
@@ -79,14 +79,14 @@ void main() async {
   // Parse from xml file.
   //
   // You can use "parseFile"(for Async) or "parseFileSync".
-  var result2 = PlistParser().parseFileSync("${Directory.current.path}/example/example.plist");
+  var result2 = PlistParser().parseFileSync("${Directory.current.path}/example/plist_xml.plist");
   print(result2);
 
   // Parse from binary file.
   //
   // It detects binary format and use binary parser automatically.
   var result3 = PlistParser().parseFileSync(
-      "${Directory.current.path}/example/example_binary.plist");
+      "${Directory.current.path}/example/plist_binary.plist");
   print(result3);
 }
 ```
